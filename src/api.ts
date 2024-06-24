@@ -42,6 +42,11 @@ api.post('/enviar', (req: Request, res: Response) => {
     let number = req.body.number;
     let consultancy = req.body.consultancy;
 
+    // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
+    if (!employer_num || !name || !corporate_reason || !email || !number || !consultancy) {
+        throw Error;
+    }
+
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, corporate_reason, email, number, consultancy) VALUES ('${employer_num}','${name}','${corporate_reason}','${email}','${number}','${consultancy}')`;
 
