@@ -29,11 +29,7 @@ api.use(express.json());
 
 // Requisição POST
 api.post('/enviar', (req: Request, res: Response) => {
-    conexao.connect(function(err: Error) {
-        if (err) throw err;
-        console.log("Conectado ao banco de dados.")
-    })
-
+    
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
     let name = req.body.name;
@@ -43,7 +39,7 @@ api.post('/enviar', (req: Request, res: Response) => {
     let consultancy = req.body.consultancy;
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
-    if (!employer_num || !name || !corporate_reason || !email || !number || !consultancy) {
+    if (!employer_num || !name || !corporate_reason || !email || !number || !consultancy){
         throw Error;
     }
 
