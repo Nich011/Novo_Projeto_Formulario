@@ -33,18 +33,18 @@ api.post('/enviar', (req: Request, res: Response) => {
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
     let name = req.body.name;
-    let corporate_reason = req.body.corporate_reason;
+    let company_name = req.body.company_name;
     let email = req.body.email;
     let number = req.body.number;
     let consultancy = req.body.consultancy;
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
-    if (!employer_num || !name || !corporate_reason || !email || !number || !consultancy){
+    if (!employer_num || !name || !company_name || !email || !number || !consultancy){
         throw Error;
     }
 
     // O comando SQL que envia os dados para a tabela corretores
-    var sql = `INSERT INTO corretores (employer_num, name, corporate_reason, email, number, consultancy) VALUES ('${employer_num}','${name}','${corporate_reason}','${email}','${number}','${consultancy}')`;
+    var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
 
     conexao.query(sql, function (err: Error) {
         if (err) throw err;
