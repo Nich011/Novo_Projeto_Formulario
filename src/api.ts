@@ -1,22 +1,22 @@
 // API conectada a um banco de dados MySQL
 // A API recebe uma requisição POST com dados que enviará para o banco de dados.
 
-import express, {Request, Response} from 'express';
+import express, {Request, Response} from 'express'; // O Express é o framework mais comumente utilizado para criação de APIs no Node
 
 // Definindo a constante da API (Aplicação Express)
-const api = express();
+const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
 
 // É preciso definir uma porta no servidor local para o funcionamento da API
-const PORT = 3000;
+const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionando.
 
-// Conectar ao banco de dados
-var mysql = require('mysql');
+// Requerir o módulo do MySQL para acesso ao Banco de Dados
+var mysql = require('mysql'); // O módulo do MySQL permite se conectar ao sistema de gerenciamento usando usuário e senha
 
 var conexao = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "Nicholas01**",
-    database: "projeto_formulario"
+    database: "projeto_formulario" // O banco de dados específico deste projeto
 });
 
 // Requisição GET de teste para verificar se a API foi inicializada
