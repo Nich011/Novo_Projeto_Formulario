@@ -47,6 +47,14 @@ api.post('/enviar', (req: Request, res: Response) => {
     employer_num = employer_num.replace(/[^\d]+/g, '');
     number = number.replace(/[^\d]+/g, '');
 
+    // Expressão regular para validação do email
+    let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+
+    // Validação do Email
+    if (regexEmail.test(email) != true){
+        return res.status(400).send("O email fornecido não segue os padrões esperados. Por favor insira um email válido.")
+    }
+
     // Verificação do número de caracteres
     if (employer_num.length != 14){
         return res.status(400).send("O CNPJ tem menos caracteres do que o necessário (14)") // encerra o processo e retorna 400
@@ -124,5 +132,5 @@ api.post('/enviar', (req: Request, res: Response) => {
 
 // "Escutar" chamadas na porta 3000 (Inicialização da API)
 api.listen(PORT, () => {
-    console.log("A API está pronta para receber requisições");
+    console.log("teste");
 })
