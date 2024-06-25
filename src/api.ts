@@ -43,12 +43,76 @@ api.post('/enviar', (req: Request, res: Response) => {
         throw Error('Existem campos vazios. Por favor envie todos os dados necessários');
     }
 
+    // Verificação do número de caracteres
+    if (employer_num.length != 14){
+        throw Error("O CNPJ tem menos caracteres do que o necessário (14)")
+    }
+
+    if (number.length != 11){
+        throw Error("O Número de telefone tem menos caracteres do que o necessário (12)")
+    }
+
+    // Validação do CNPJ
+
+    let mult = [
+        employer_num[0] * 5,
+        employer_num[1] * 4,
+        employer_num[2] * 3,
+        employer_num[3] * 2,
+        employer_num[4] * 9,
+        employer_num[5] * 8,
+        employer_num[6] * 7,
+        employer_num[7] * 6,
+        employer_num[8] * 5,
+        employer_num[9] * 4,
+        employer_num[10] * 3,
+        employer_num[11] * 2
+    ] // cada um dos algarismos antes do primeiro digito verificador multiplicados pelo valor correspondente
+
+    let mult2 = [
+        employer_num[0] * 6,
+        employer_num[1] * 5,
+        employer_num[2] * 4,
+        employer_num[3] * 3,
+        employer_num[4] * 2,
+        employer_num[5] * 9,
+        employer_num[6] * 8,
+        employer_num[7] * 7,
+        employer_num[8] * 6,
+        employer_num[9] * 5,
+        employer_num[10] * 4,
+        employer_num[11] * 3,
+        employer_num[12] * 2
+    ] // cada um dos algarismos antes do primeiro digito verificador multiplicados pelo valor correspondente
+
+    let soma = 0;
+    for (let i in mult){ // i se refere aos elementos dentro do array de algarismos multiplicados.
+        soma += mult[i] // O loop funciona adicionando à variável soma os valores dos elementos no array.
+    } // Com isso conseguimos o valor total da soma dos algarismos multiplicados.
+    
+    let mod = soma % 11 
+    let resultado = mod < 2 ? 0 : 11 - soma % 11;
+
+    let soma2 = 0;
+    for (let i in mult2){ // i se refere aos elementos dentro do array de algarismos multiplicados.
+        soma2 += mult2[i] // O loop funciona adicionando à variável soma os valores dos elementos no array.
+    } // Com isso conseguimos o valor total da soma dos algarismos multiplicados.
+    
+    let mod2 = soma2 % 11 
+    let resultado2 = mod2 < 2 ? 0 : 11 - soma2 % 11;
+
+    if (employer_num[12] != resultado || employer_num[13] != resultado2){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
+        console.log("Soma: " + soma)
+        console.log("Mod: " + mod)
+        throw Error('O CNPJ inserido é inválido. Os Dígitos verificadores não estão corretos.') // é lançado um erro
+    }
+
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
 
     conexao.query(sql, function (err: Error) {
         if (err) throw err;
-        console.log("Cadastro foi um sucesso")
+        console.log("O cadastro foi um sucesso")
     });
 
     res.send(`Foi adicionado um novo cadastro à tabela corretores com o CNPJ ${employer_num}`)
@@ -56,5 +120,5 @@ api.post('/enviar', (req: Request, res: Response) => {
 
 // "Escutar" chamadas na porta 3000 (Inicialização da API)
 api.listen(PORT, () => {
-    console.log("http://localhost:3000/teste");
+    console.log("teste");
 })
