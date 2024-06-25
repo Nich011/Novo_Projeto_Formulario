@@ -102,8 +102,8 @@ api.post('/enviar', (req: Request, res: Response) => {
     let resultado2 = mod2 < 2 ? 0 : 11 - soma2 % 11;
 
     if (employer_num[12] != resultado || employer_num[13] != resultado2){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
-        console.log("Soma: " + soma)
-        console.log("Mod: " + mod)
+        console.log("Somas: " + soma + " " + soma2)
+        console.log("Mods: " + mod + " " + mod2)
         throw Error('O CNPJ inserido é inválido. Os Dígitos verificadores não estão corretos.') // é lançado um erro
     }
 
