@@ -124,5 +124,5 @@ api.post('/enviar', (req: Request, res: Response) => {
 
 // "Escutar" chamadas na porta 3000 (Inicialização da API)
 api.listen(PORT, () => {
-    console.log("teste");
+    console.log("A API está pronta para receber requisições");
 })
