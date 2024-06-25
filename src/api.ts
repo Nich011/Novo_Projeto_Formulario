@@ -12,7 +12,7 @@ const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionand
 // Requerir o módulo do MySQL para acesso ao Banco de Dados
 var mysql = require('mysql'); // O módulo do MySQL permite se conectar ao sistema de gerenciamento usando usuário e senha
 
-var conexao = mysql.createConnection({
+var conexao = mysql.createConnection({ //conexão com o MySQL
     host: "localhost",
     user: "root",
     password: "Nicholas01**",
