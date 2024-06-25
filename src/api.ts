@@ -43,34 +43,6 @@ api.post('/enviar', (req: Request, res: Response) => {
         throw Error;
     }
 
-    // Validação do CNPJ
-    let mult = [
-        employer_num.slice(0) * 5,
-        employer_num.slice(1) * 4,
-        employer_num.slice(2) * 3,
-        employer_num.slice(3) * 2,
-        employer_num.slice(4) * 9,
-        employer_num.slice(5) * 8,
-        employer_num.slice(6) * 7,
-        employer_num.slice(7) * 6,
-        employer_num.slice(8) * 5,
-        employer_num.slice(9) * 4,
-        employer_num.slice(10) * 3,
-        employer_num.slice(11) * 2
-    ]
-
-    let soma = 0;
-    for (let i = 0; i < mult.length; i++){
-        soma += mult[i]
-    }
-    
-    if (employer_num[12] != soma % 11){
-        throw Error
-    }
-
-    // Remoção de caracteres especiais do número de telefone
-
-
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
 
