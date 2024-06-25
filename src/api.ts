@@ -40,7 +40,7 @@ api.post('/enviar', (req: Request, res: Response) => {
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
     if (!employer_num || !name || !company_name || !email || !number || !consultancy){
-        throw Error;
+        throw Error('Existem campos vazios. Por favor envie todos os dados necessários');
     }
 
     // O comando SQL que envia os dados para a tabela corretores
