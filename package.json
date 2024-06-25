@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx ts-node src/api copy.ts",
+    "test": "npx ts-node src/api_copy.ts",
     "dev": "npx ts-node src/api.ts"
   },
   "keywords": [],

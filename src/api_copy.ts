@@ -46,26 +46,30 @@ api.post('/enviar', (req: Request, res: Response) => {
     // Validação do CNPJ
 
     let mult = [
-        employer_num.slice(0) * 5,
-        employer_num.slice(1) * 4,
-        employer_num.slice(2) * 3,
-        employer_num.slice(3) * 2,
-        employer_num.slice(4) * 9,
-        employer_num.slice(5) * 8,
-        employer_num.slice(6) * 7,
-        employer_num.slice(7) * 6,
-        employer_num.slice(8) * 5,
-        employer_num.slice(9) * 4,
-        employer_num.slice(10) * 3,
-        employer_num.slice(11) * 2
+        employer_num[0] * 5,
+        employer_num[1] * 4,
+        employer_num[2] * 3,
+        employer_num[3] * 2,
+        employer_num[4] * 9,
+        employer_num[5] * 8,
+        employer_num[6] * 7,
+        employer_num[7] * 6,
+        employer_num[8] * 5,
+        employer_num[9] * 4,
+        employer_num[10] * 3,
+        employer_num[11] * 2
     ] // cada um dos algarismos antes do primeiro digito verificador multiplicados pelo valor correspondente
 
     let soma = 0;
-    for (let i = 0; i < mult.length; i++){ // i se refere aos elementos dentro do array de algarismos multiplicados.
+    for (let i in mult){ // i se refere aos elementos dentro do array de algarismos multiplicados.
         soma += mult[i] // O loop funciona adicionando à variável soma os valores dos elementos no array.
     } // Com isso conseguimos o valor total da soma dos algarismos multiplicados.
     
-    if (employer_num[12] != soma % 11){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
+    let mod = soma % 11; 
+
+    if (employer_num[12] != 11 - (mod)){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
+        console.log("Soma: " + soma)
+        console.log("Mod: " + mod)
         throw Error('O CNPJ inserido é inválido (Primeiro Dígito)') // é lançado um erro
     }
 
@@ -74,7 +78,7 @@ api.post('/enviar', (req: Request, res: Response) => {
 
     conexao.query(sql, function (err: Error) {
         if (err) throw err;
-        console.log("Cadastro foi um sucesso")
+        console.log("O cadastro foi um sucesso")
     });
 
     res.send(`Foi adicionado um novo cadastro à tabela corretores com o CNPJ ${employer_num}`)
@@ -82,5 +86,5 @@ api.post('/enviar', (req: Request, res: Response) => {
 
 // "Escutar" chamadas na porta 3000 (Inicialização da API)
 api.listen(PORT, () => {
-    console.log("http://localhost:3000/teste");
+    console.log("teste");
 })
