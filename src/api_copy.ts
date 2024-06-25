@@ -12,7 +12,7 @@ const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionand
 // Requerir o módulo do MySQL para acesso ao Banco de Dados
 var mysql = require('mysql'); // O módulo do MySQL permite se conectar ao sistema de gerenciamento usando usuário e senha
 
-var conexao = mysql.createConnection({
+var conexao = mysql.createConnection({ //conexão com o MySQL
     host: "localhost",
     user: "root",
     password: "Nicholas01**",
@@ -102,8 +102,8 @@ api.post('/enviar', (req: Request, res: Response) => {
     let resultado2 = mod2 < 2 ? 0 : 11 - soma2 % 11;
 
     if (employer_num[12] != resultado || employer_num[13] != resultado2){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
-        console.log("Soma: " + soma)
-        console.log("Mod: " + mod)
+        console.log("Somas: " + soma + " " + soma2)
+        console.log("Mods: " + mod + " " + mod2)
         throw Error('O CNPJ inserido é inválido. Os Dígitos verificadores não estão corretos.') // é lançado um erro
     }
 
