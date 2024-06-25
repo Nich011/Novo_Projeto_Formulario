@@ -40,16 +40,20 @@ api.post('/enviar', (req: Request, res: Response) => {
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
     if (!employer_num || !name || !company_name || !email || !number || !consultancy){
-        throw Error('Existem campos vazios. Por favor envie todos os dados necessários');
+        return res.status(400).send('Existem campos vazios. Por favor envie todos os dados necessários'); // encerra o processo e retorna 400
     }
+
+    // Remove os caracteres especiais que podem estar presentes nos campos onde os valores são números.
+    employer_num = employer_num.replace(/[^\d]+/g, '');
+    number = number.replace(/[^\d]+/g, '');
 
     // Verificação do número de caracteres
     if (employer_num.length != 14){
-        throw Error("O CNPJ tem menos caracteres do que o necessário (14)")
+        return res.status(400).send("O CNPJ tem menos caracteres do que o necessário (14)") // encerra o processo e retorna 400
     }
 
     if (number.length != 11){
-        throw Error("O Número de telefone tem menos caracteres do que o necessário (12)")
+        return res.status(400).send("O Número de telefone tem menos caracteres do que o necessário (12)") // encerra o processo e retorna 400
     }
 
     // Validação do CNPJ
@@ -102,9 +106,9 @@ api.post('/enviar', (req: Request, res: Response) => {
     let resultado2 = mod2 < 2 ? 0 : 11 - soma2 % 11;
 
     if (employer_num[12] != resultado || employer_num[13] != resultado2){ // caso o primeiro dígito verificador for diferente do resto da divisão da soma por 11,
-        console.log("Somas: " + soma + " " + soma2)
-        console.log("Mods: " + mod + " " + mod2)
-        throw Error('O CNPJ inserido é inválido. Os Dígitos verificadores não estão corretos.') // é lançado um erro
+        console.log("Somas: " + soma + " " + soma2) // No caso de erro do CNPJ, é retornado no terminal as somas e os restos
+        console.log("Mods: " + mod + " " + mod2) // usados no processo de validação.
+        return res.status(400).send('O CNPJ inserido é inválido. Os Dígitos verificadores não estão corretos.') // é lançado um erro
     }
 
     // O comando SQL que envia os dados para a tabela corretores
