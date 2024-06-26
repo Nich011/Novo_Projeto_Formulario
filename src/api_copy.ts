@@ -4,6 +4,8 @@
 import express, {Request, Response} from 'express'; // O Express é o framework mais comumente utilizado para criação de APIs no Node
 import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
+import { validadorEmail } from './validadores/email';
+import { configMySQL } from './configs/configMySQL';
 
 // Definindo a constante da API (Aplicação Express)
 const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
@@ -20,12 +22,7 @@ const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionand
 // Requerir o módulo do MySQL para acesso ao Banco de Dados
 var mysql = require('mysql'); // O módulo do MySQL permite se conectar ao sistema de gerenciamento usando usuário e senha
 
-var conexao = mysql.createConnection({ //conexão com o MySQL
-    host: "localhost",
-    user: "root",
-    password: "Nicholas01**",
-    database: "projeto_formulario" // O banco de dados específico deste projeto
-});
+var conexao = mysql.createConnection(configMySQL);
 
 // Requisição GET de teste para verificar se a API foi inicializada
 api.get('/teste', (req: Request, res: Response) => { // Requisição GET que retorna uma mensagem de teste usando parâmetros query quando acessam "localhost:3000/teste"
@@ -52,11 +49,8 @@ api.post('/enviar', (req: Request, res: Response) => {
     employer_num = employer_num.replace(/[^\d]+/g, '');
     number = number.replace(/[^\d]+/g, '');
 
-    // Expressão regular para validação do email
-    let regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-
     // Validação do Email
-    if (regexEmail.test(email) != true){
+    if (validadorEmail(email) == false){
         return res.status(400).send("O email fornecido não segue os padrões esperados. Por favor insira um email válido.")
     }
 
