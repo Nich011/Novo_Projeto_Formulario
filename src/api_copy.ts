@@ -57,18 +57,18 @@ api.post('/enviar', (req: Request, res: Response) => {
 
     // Verificação do número de caracteres do CNPJ
     if (employer_num.length != 14){
-        return res.status(400).send("O CNPJ tem menos caracteres do que o necessário (14)") // encerra o processo e retorna 400
+        return res.status(400).send("O CNPJ tem menos/mais caracteres do que o necessário (14)") // encerra o processo e retorna 400
     }
 
     // Verificação do número de caracteres do Telefone
     if (number.length != 11){
-        return res.status(400).send("O Número de telefone tem menos caracteres do que o necessário (12)") // encerra o processo e retorna 400
+        return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (12)") // encerra o processo e retorna 400
     }
 
     // Caso qualquer um dos campos que possui um limite de 60 caracteres ultrapassar esse valor, o processo é encerrado e é retornado um erro.
-    if (name.lenght > 60) return res.status(400).send("O campo de nome possui mais caracteres do que o limite permitido (60)");
-    if (company_name.lenght > 60) return res.status(400).send("O campo de razão social possui mais caracteres do que o limite permitido (60)");
-    if (email.lenght > 60) return res.status(400).send("O campo de email possui mais caracteres do que o limite permitido (60)");
+    if (name.length > 60) return res.status(400).send("O campo de nome possui mais caracteres do que o limite permitido (60)");
+    if (company_name.length > 60) return res.status(400).send("O campo de razão social possui mais caracteres do que o limite permitido (60)");
+    if (email.length > 60) return res.status(400).send("O campo de email possui mais caracteres do que o limite permitido (60)");
     if (consultancy.length > 60) return res.status(400).send("O campo de assessoria possui mais caracteres do que o limite permitido (60)")
     
 
@@ -130,11 +130,13 @@ api.post('/enviar', (req: Request, res: Response) => {
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
 
+    // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {
         if (err) throw err;
         console.log("O cadastro foi um sucesso")
     });
 
+    // Mensagem de resposta ao usuário avisando que o cadastro foi bem sucedido
     res.send(`Foi adicionado um novo cadastro à tabela corretores com o CNPJ ${employer_num}`)
 });
 
