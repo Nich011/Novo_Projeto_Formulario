@@ -60,11 +60,6 @@ api.post('/enviar', (req: Request, res: Response) => {
         return res.status(400).send("O email fornecido não segue os padrões esperados. Por favor insira um email válido.")
     }
 
-    // Verificação do número de caracteres do CNPJ
-    if (employer_num.length != 14){
-        return res.status(400).send("O CNPJ tem menos/mais caracteres do que o necessário (14)") // encerra o processo e retorna 400
-    }
-
     // Verificação do número de caracteres do Telefone
     if (number.length != 11){
         return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (12)") // encerra o processo e retorna 400
@@ -77,8 +72,9 @@ api.post('/enviar', (req: Request, res: Response) => {
     if (consultancy.length > 60) return res.status(400).send("O campo de assessoria possui mais caracteres do que o limite permitido (60)")
     
     // Validação do CNPJ
-
-    validadorCNPJ(employer_num);
+    if (validadorCNPJ(employer_num) == false){
+        return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
+    }
 
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
