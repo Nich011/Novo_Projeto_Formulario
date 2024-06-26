@@ -2,9 +2,16 @@
 // A API recebe uma requisição POST com dados que enviará para o banco de dados.
 
 import express, {Request, Response} from 'express'; // O Express é o framework mais comumente utilizado para criação de APIs no Node
+import cors from "cors";
 
 // Definindo a constante da API (Aplicação Express)
 const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
+
+// A API recebe o corpo em formato JSON
+api.use(express.json());
+
+// A API utiliza o CORS para conseguir se comunicar com o front-end
+api.use(cors());
 
 // É preciso definir uma porta no servidor local para o funcionamento da API
 const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionando.
@@ -23,9 +30,6 @@ var conexao = mysql.createConnection({ //conexão com o MySQL
 api.get('/teste', (req: Request, res: Response) => { // Requisição GET que retorna uma mensagem de teste usando parâmetros query quando acessam "localhost:3000/teste"
     res.send(`Mensagem de Teste. Esta mensagem está sendo retornada após uma requisição GET`); // Retorna uma resposta.
 });
-
-// A API recebe o corpo em formato JSON
-api.use(express.json());
 
 // Requisição POST
 api.post('/enviar', (req: Request, res: Response) => {
