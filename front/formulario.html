@@ -12,20 +12,19 @@
     <div class="header">
         <h1>Darwin Seguros - Corretores</h1>
     </div>
-    <form>
-        <label for="cnpj">Digite o seu CNPJ:</label><br>
-        <input type="text" id="cnpj" name="cnpj" pattern="\d{14}" title="Por favor, insira exatamente 14 dígitos."
-            required><br>
-        <label for="nome">Digite o seu Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br>
-        <label for="razao_social">Digite a sua Razão Social:</label><br>
-        <input type="text" id="razao_social" name="razao_social" required><br>
+    <form action="localhost:3000/enviar" method="post">
+        <label for="employer_num">Digite o seu CNPJ:</label><br>
+        <input type="text" id="employer_num" name="employer_num" required><br>
+        <label for="name">Digite o seu Nome:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="company_name">Digite a sua Razão Social:</label><br>
+        <input type="text" id="company_name" name="company_name" required><br>
         <label for="email">Digite o seu Email:</label>
         <input type="email" id="email" name="email" required><br>
-        <label for="numero">Digite o seu Número de Telefone:</label>
-        <input type="number" id="numero" name="numero" required><br>
-        <label for="assessoria">Digite a sua Assessoria</label><br>
-        <select id="assessoria" name="assessoria">
+        <label for="number">Digite o seu Número de Telefone:</label>
+        <input type="number" id="number" name="number" required><br>
+        <label for="consultancy">Digite a sua Assessoria</label><br>
+        <select id="consultancy" name="consultancy">
             <option value="">Selecione...</option>
             <option value="1">1</option>
             <option value="50">50</option>
@@ -33,9 +32,4 @@
         <input type="submit" value="Enviar">
     </form>
 </body>
-
-<footer>
-
-</footer>
-
 </html>
