@@ -1,7 +1,7 @@
 // API conectada a um banco de dados MySQL
 // A API recebe uma requisição POST com dados que enviará para o banco de dados.
 
-import express, {Request, Response} from 'express'; // O Express é o framework mais comumente utilizado para criação de APIs no Node
+import express, { Request, Response } from 'express'; // O Express é o framework mais comumente utilizado para criação de APIs no Node
 import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
@@ -31,7 +31,7 @@ api.get('/teste', (req: Request, res: Response) => { // Requisição GET que ret
 
 // Requisição POST
 api.post('/enviar', (req: Request, res: Response) => {
-    
+
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
     let name = req.body.name;
@@ -41,7 +41,7 @@ api.post('/enviar', (req: Request, res: Response) => {
     let consultancy = req.body.consultancy;
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
-    if (!employer_num || !name || !company_name || !email || !number || !consultancy){
+    if (!employer_num || !name || !company_name || !email || !number || !consultancy) {
         return res.status(400).send('Existem campos vazios. Por favor envie todos os dados necessários'); // encerra o processo e retorna 400
     }
 
@@ -50,12 +50,12 @@ api.post('/enviar', (req: Request, res: Response) => {
     number = number.replace(/[^\d]+/g, '');
 
     // Validação do Email
-    if (validadorEmail(email) == false){
+    if (validadorEmail(email) == false) {
         return res.status(400).send("O email fornecido não segue os padrões esperados. Por favor insira um email válido.")
     }
 
     // Verificação do número de caracteres do Telefone
-    if (number.length != 11){
+    if (number.length != 11) {
         return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (12)") // encerra o processo e retorna 400
     }
 
@@ -64,9 +64,9 @@ api.post('/enviar', (req: Request, res: Response) => {
     if (company_name.length > 60) return res.status(400).send("O campo de razão social possui mais caracteres do que o limite permitido (60)");
     if (email.length > 60) return res.status(400).send("O campo de email possui mais caracteres do que o limite permitido (60)");
     if (consultancy.length > 60) return res.status(400).send("O campo de assessoria possui mais caracteres do que o limite permitido (60)")
-    
+
     // Validação do CNPJ
-    if (validadorCNPJ(employer_num) == false){
+    if (validadorCNPJ(employer_num) == false) {
         return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
     }
 

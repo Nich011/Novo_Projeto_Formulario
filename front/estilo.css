@@ -8,11 +8,17 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.header {
+    text-align: center;
+    height: 800px;
+    width: 1200px;
+}
+
 form {
     background-color: #fff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px 10px rgba(0,0,0,0.1);
+    box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 form label {
@@ -67,5 +73,5 @@ h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: #fd0283e4;
     width: 50%;
-    
+
 }
