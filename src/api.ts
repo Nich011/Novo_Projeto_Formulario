@@ -95,7 +95,7 @@ api.post('/enviar', (req: Request, res: Response) => {
         employer_num[10] * 4,
         employer_num[11] * 3,
         employer_num[12] * 2
-    ] // cada um dos algarismos antes do primeiro digito verificador multiplicados pelo valor correspondente
+    ] // cada um dos algarismos antes do segundo digito verificador multiplicados pelo valor correspondente
 
     let soma = 0;
     for (let i in mult){ // i se refere aos elementos dentro do array de algarismos multiplicados.
