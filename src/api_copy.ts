@@ -71,7 +71,6 @@ api.post('/enviar', (req: Request, res: Response) => {
     if (email.length > 60) return res.status(400).send("O campo de email possui mais caracteres do que o limite permitido (60)");
     if (consultancy.length > 60) return res.status(400).send("O campo de assessoria possui mais caracteres do que o limite permitido (60)")
     
-
     // Validação do CNPJ
 
     let mult = [
