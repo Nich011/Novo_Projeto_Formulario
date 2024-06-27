@@ -5,6 +5,7 @@ import express, { Request, Response } from 'express'; // O Express é o framewor
 import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
+import { validadorNumero } from './validadores/numero';
 import * as configMySQL from './configs/configMySQL.json'
 
 // Definindo a constante da API (Aplicação Express)
@@ -55,8 +56,8 @@ api.post('/enviar', (req: Request, res: Response) => {
     }
 
     // Verificação do número de caracteres do Telefone
-    if (number.length != 11) {
-        return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (12)") // encerra o processo e retorna 400
+    if (validadorNumero(number) == false) {
+        return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (11)") // encerra o processo e retorna 400
     }
 
     // Caso qualquer um dos campos que possui um limite de 60 caracteres ultrapassar esse valor, o processo é encerrado e é retornado um erro.
