@@ -45,7 +45,7 @@ api.post('/enviar', (req: Request, res: Response) => {
     if (!employer_num || !name || !company_name || !email || !number || !consultancy) {
         return res.status(400).send('Existem campos vazios. Por favor envie todos os dados necessários'); // encerra o processo e retorna 400
     }
-
+    
     // Remove os caracteres especiais que podem estar presentes nos campos onde os valores são números.
     employer_num = employer_num.replace(/[^\d]+/g, '');
     number = number.replace(/[^\d]+/g, '');
@@ -57,7 +57,7 @@ api.post('/enviar', (req: Request, res: Response) => {
 
     // Verificação do número de caracteres do Telefone
     if (validadorNumero(number) == false) {
-        return res.status(400).send("O Número de telefone tem menos/mais caracteres do que o necessário (11)") // encerra o processo e retorna 400
+        return res.status(400).send("O Número de telefone não tem a quantidade esperada de caracteres (11)") // encerra o processo e retorna 400
     }
 
     // Caso qualquer um dos campos que possui um limite de 60 caracteres ultrapassar esse valor, o processo é encerrado e é retornado um erro.
