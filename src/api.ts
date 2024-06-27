@@ -5,7 +5,6 @@ import express, { Request, Response } from 'express'; // O Express é o framewor
 import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
-import { configMySQL } from './configs/configMySQL';
 
 // Definindo a constante da API (Aplicação Express)
 const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
@@ -22,7 +21,12 @@ const PORT = 3000; // O domínio localhost:3000 é onde a API estará funcionand
 // Requerir o módulo do MySQL para acesso ao Banco de Dados
 var mysql = require('mysql'); // O módulo do MySQL permite se conectar ao sistema de gerenciamento usando usuário e senha
 
-var conexao = mysql.createConnection(configMySQL);
+var conexao = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "Nicholas01**",
+    database: "projeto_formulario" // O banco de dados específico deste projeto
+});
 
 // Requisição GET de teste para verificar se a API foi inicializada
 api.get('/teste', (req: Request, res: Response) => { // Requisição GET que retorna uma mensagem de teste usando parâmetros query quando acessam "localhost:3000/teste"

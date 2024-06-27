@@ -5,7 +5,7 @@ import express, { Request, Response } from 'express'; // O Express é o framewor
 import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
-import { configMySQL } from './configs/configMySQL';
+import * as configMySQL from './configs/configMySQL.json'
 
 // Definindo a constante da API (Aplicação Express)
 const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
