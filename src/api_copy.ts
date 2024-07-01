@@ -31,7 +31,7 @@ api.get('/teste', (req: Request, res: Response) => { // Requisição GET que ret
 });
 
 // Requisição POST
-api.post('/enviar', (req: Request, res: Response) => {
+api.post('/enviar', async (req: Request, res: Response) => {
 
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
@@ -45,7 +45,7 @@ api.post('/enviar', (req: Request, res: Response) => {
     if (!employer_num || !name || !company_name || !email || !number || !consultancy) {
         return res.status(400).send('Existem campos vazios. Por favor envie todos os dados necessários'); // encerra o processo e retorna 400
     }
-    
+
     // Remove os caracteres especiais que podem estar presentes nos campos onde os valores são números.
     employer_num = employer_num.replace(/[^\d]+/g, '');
     number = number.replace(/[^\d]+/g, '');
@@ -71,8 +71,12 @@ api.post('/enviar', (req: Request, res: Response) => {
         return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
     }
 
+    const response = await fetch("https://www2.susep.gov.br/safe/corretoresapig/dadospublicos/pesquisar?tipoPessoa=PJ&cnpj=28167676000193&cpfCnpj=28167676000193&page=1")
+    const body = await response.json();
+    let codigo = body.retorno.registros[0].protocolo;
+
     // O comando SQL que envia os dados para a tabela corretores
-    var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
+    var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy, susep_code) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}')`;
 
     // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {

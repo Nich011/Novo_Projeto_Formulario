@@ -72,7 +72,7 @@ api.post('/enviar', (req: Request, res: Response) => {
     }
 
     // O comando SQL que envia os dados para a tabela corretores
-    var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}')`;
+    var sql = `INSERT INTO corretores2 (employer_num, name, company_name, email, number, consultancy, microsseguros) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}',true)`;
 
     // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {
