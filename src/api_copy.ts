@@ -79,9 +79,18 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
     }
 
     const codigo = body.retorno.registros[0].protocolo;
+    const produtos = body.retorno.registros[0].produtos;
+    
+    var capitalizacao = produtos.toUpperCase().includes('Capitalização'.toUpperCase());
+    var previdencia = produtos.toUpperCase().includes('Previdência'.toUpperCase());
+    var pessoas = produtos.toUpperCase().includes('Pessoas'.toUpperCase());
+    var bens = produtos.toUpperCase().includes('Bens'.toUpperCase());
+    var patrimonio = produtos.toUpperCase().includes('Danos'.toUpperCase());
+    var dados = produtos.toUpperCase().includes('Dados'.toUpperCase());
+    var microsseguros = produtos.toUpperCase().includes('Microsseguros'.toUpperCase());
 
     // O comando SQL que envia os dados para a tabela corretores
-    var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy, susep_code) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}')`;
+    var sql = `INSERT INTO corretores2 (employer_num, name, company_name, email, number, consultancy, susep_code, capitalização, prev_complementar, pessoas, bens, patrimônio, dados, microsseguros) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}',${capitalizacao},${previdencia},${pessoas},${bens},${patrimonio},${dados},${microsseguros})`;
 
     // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {
