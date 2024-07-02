@@ -6,7 +6,7 @@ import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
 import { validadorNumero } from './validadores/numero';
-import * as configMySQL from './configs/configMySQL.json'
+import * as configMySQL from './configs/configMySQL.json';
 
 // Definindo a constante da API (Aplicação Express)
 const api = express(); // A constante API se refere à função do express para controle do funcionamento da aplicação
@@ -31,7 +31,7 @@ api.get('/teste', (req: Request, res: Response) => { // Requisição GET que ret
 });
 
 // Requisição POST
-api.post('/enviar', async (req: Request, res: Response) => {
+api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3000/enviar
 
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
@@ -71,9 +71,14 @@ api.post('/enviar', async (req: Request, res: Response) => {
         return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
     }
 
-    const response = await fetch("https://www2.susep.gov.br/safe/corretoresapig/dadospublicos/pesquisar?tipoPessoa=PJ&cnpj=28167676000193&cpfCnpj=28167676000193&page=1")
+    const response = await fetch(`https://www2.susep.gov.br/safe/corretoresapig/dadospublicos/pesquisar?tipoPessoa=PJ&cnpj=${employer_num}&cpfCnpj=${employer_num}&page=1`)
     const body = await response.json();
-    let codigo = body.retorno.registros[0].protocolo;
+
+    if (body.retorno.totalRegistros == 0) {
+        return res.status(400).send(("Não há registros na SUSEP com CNPJ correspondente"))
+    }
+
+    const codigo = body.retorno.registros[0].protocolo;
 
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores (employer_num, name, company_name, email, number, consultancy, susep_code) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}')`;
