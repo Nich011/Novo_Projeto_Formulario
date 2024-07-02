@@ -6,7 +6,7 @@ import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
 import { validadorNumero } from './validadores/numero';
-import { logSusepCode, logProdutos } from './Susep/susepCode';
+import { logSusepCode, logProdutos } from './Susep/susep';
 import * as configMySQL from './configs/configMySQL.json';
 
 // Definindo a constante da API (Aplicação Express)
