@@ -37,13 +37,12 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
     // Os dados que serão enviados ao banco de dados devem ter sido recebidos no JSON da requisição post
     let employer_num = req.body.employer_num;
     let name = req.body.name;
-    let company_name = req.body.company_name;
     let email = req.body.email;
     let number = req.body.number;
     let consultancy = req.body.consultancy;
 
     // Deve haver uma verificação de se todos os valores foram recebidos no corpo da requisição
-    if (!employer_num || !name || !company_name || !email || !number || !consultancy) {
+    if (!employer_num || !name || !email || !number || !consultancy) {
         return res.status(400).send('Existem campos vazios. Por favor envie todos os dados necessários'); // encerra o processo e retorna 400
     }
 
@@ -63,7 +62,7 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
 
     // Caso qualquer um dos campos que possui um limite de 60 caracteres ultrapassar esse valor, o processo é encerrado e é retornado um erro.
     if (name.length > 60) return res.status(400).send("O campo de nome possui mais caracteres do que o limite permitido (60)");
-    if (company_name.length > 60) return res.status(400).send("O campo de razão social possui mais caracteres do que o limite permitido (60)");
+    // if (company_name.length > 60) return res.status(400).send("O campo de razão social possui mais caracteres do que o limite permitido (60)");
     if (email.length > 60) return res.status(400).send("O campo de email possui mais caracteres do que o limite permitido (60)");
     if (consultancy.length > 60) return res.status(400).send("O campo de assessoria possui mais caracteres do que o limite permitido (60)")
 
@@ -73,9 +72,10 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
     }
 
     var retorno = await logSusepCode(employer_num);
-    if(retorno.length == 2){
+    if(retorno.length == 3){
         var produtos = retorno[1];
         var codigo =  retorno[0];
+        var company_name = retorno[2].substring(0,60);
     }
     else{
         return res.status(400).send(("Não há registros na SUSEP com CNPJ correspondente"))
@@ -89,11 +89,8 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
     var dados = produtos.toUpperCase().includes('Dados'.toUpperCase());
     var microsseguros = produtos.toUpperCase().includes('Microsseguros'.toUpperCase());
 
-    // console.log(produtos)
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores2 (employer_num, name, company_name, email, number, consultancy, susep_code, capitalização, prev_complementar, pessoas, bens, patrimônio, dados, microsseguros) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}',${capitalizacao},${previdencia},${pessoas},${bens},${patrimonio},${dados},${microsseguros})`;
-
-    // ,'${codigo}',${capitalizacao},${previdencia},${pessoas},${bens},${patrimonio},${dados},${microsseguros}
 
     // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {
