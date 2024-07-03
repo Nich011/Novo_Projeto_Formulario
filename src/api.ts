@@ -6,6 +6,7 @@ import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
 import { validadorNumero } from './validadores/numero';
+import { logSusepCode } from './Susep/susep';
 import * as configMySQL from './configs/configMySQL.json';
 
 // Definindo a constante da API (Aplicação Express)
@@ -71,15 +72,14 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
         return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
     }
 
-    const response = await fetch(`https://www2.susep.gov.br/safe/corretoresapig/dadospublicos/pesquisar?tipoPessoa=PJ&cnpj=${employer_num}&cpfCnpj=${employer_num}&page=1`)
-    const body = await response.json();
-
-    if (body.retorno.totalRegistros == 0) {
+    var retorno = await logSusepCode(employer_num);
+    if(retorno.length == 2){
+        var produtos = retorno[1];
+        var codigo =  retorno[0];
+    }
+    else{
         return res.status(400).send(("Não há registros na SUSEP com CNPJ correspondente"))
     }
-
-    const codigo = body.retorno.registros[0].protocolo;
-    const produtos = body.retorno.registros[0].produtos;
     
     var capitalizacao = produtos.toUpperCase().includes('Capitalização'.toUpperCase());
     var previdencia = produtos.toUpperCase().includes('Previdência'.toUpperCase());
@@ -89,8 +89,11 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
     var dados = produtos.toUpperCase().includes('Dados'.toUpperCase());
     var microsseguros = produtos.toUpperCase().includes('Microsseguros'.toUpperCase());
 
+    // console.log(produtos)
     // O comando SQL que envia os dados para a tabela corretores
     var sql = `INSERT INTO corretores2 (employer_num, name, company_name, email, number, consultancy, susep_code, capitalização, prev_complementar, pessoas, bens, patrimônio, dados, microsseguros) VALUES ('${employer_num}','${name}','${company_name}','${email}','${number}','${consultancy}','${codigo}',${capitalizacao},${previdencia},${pessoas},${bens},${patrimonio},${dados},${microsseguros})`;
+
+    // ,'${codigo}',${capitalizacao},${previdencia},${pessoas},${bens},${patrimonio},${dados},${microsseguros}
 
     // É lançada a query para envio dos dados à tabela corretores
     conexao.query(sql, function (err: Error) {

@@ -6,7 +6,7 @@ import cors from "cors";
 import { validadorCNPJ } from './validadores/cnpj';
 import { validadorEmail } from './validadores/email';
 import { validadorNumero } from './validadores/numero';
-import { logSusepCode, logProdutos } from './Susep/susep';
+import { logSusepCode } from './Susep/susep';
 import * as configMySQL from './configs/configMySQL.json';
 
 // Definindo a constante da API (Aplicação Express)
@@ -72,20 +72,22 @@ api.post('/enviar', async (req: Request, res: Response) => { //http:/localhost:3
         return res.status(400).send("Houve um problema com a validação do CNPJ, por favor insira um CNPJ válido.")
     }
 
-    var codigo = await logSusepCode(employer_num);
-    var produtos = await logProdutos(employer_num);
-
-    if (await logSusepCode(employer_num) == false) {
+    var retorno = await logSusepCode(employer_num);
+    if(retorno.length == 2){
+        var produtos = retorno[1];
+        var codigo =  retorno[0];
+    }
+    else{
         return res.status(400).send(("Não há registros na SUSEP com CNPJ correspondente"))
     }
     
-    var capitalizacao = produtos.toString().toUpperCase().includes('Capitalização'.toUpperCase());
-    var previdencia = produtos.toString().toUpperCase().includes('Previdência'.toUpperCase());
-    var pessoas = produtos.toString().toUpperCase().includes('Pessoas'.toUpperCase());
-    var bens = produtos.toString().toUpperCase().includes('Bens'.toUpperCase());
-    var patrimonio = produtos.toString().toUpperCase().includes('Danos'.toUpperCase());
-    var dados = produtos.toString().toUpperCase().includes('Dados'.toUpperCase());
-    var microsseguros = produtos.toString().toUpperCase().includes('Microsseguros'.toUpperCase());
+    var capitalizacao = produtos.toUpperCase().includes('Capitalização'.toUpperCase());
+    var previdencia = produtos.toUpperCase().includes('Previdência'.toUpperCase());
+    var pessoas = produtos.toUpperCase().includes('Pessoas'.toUpperCase());
+    var bens = produtos.toUpperCase().includes('Bens'.toUpperCase());
+    var patrimonio = produtos.toUpperCase().includes('Danos'.toUpperCase());
+    var dados = produtos.toUpperCase().includes('Dados'.toUpperCase());
+    var microsseguros = produtos.toUpperCase().includes('Microsseguros'.toUpperCase());
 
     // console.log(produtos)
     // O comando SQL que envia os dados para a tabela corretores
